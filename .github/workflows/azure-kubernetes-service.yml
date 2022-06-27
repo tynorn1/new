@@ -74,5 +74,6 @@ jobs:
     - name: deploy
       uses: vimeda/helm@v1.6.8
       with:
+        release: istio-base
         namespace: istio-system
         chart: ./
