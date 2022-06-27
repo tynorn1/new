@@ -72,6 +72,6 @@ jobs:
     # Version of helm
         version: latest
     - name: deploy
+      uses: vimeda/helm@v1.6.8
       with:
-          uses: vimeda/helm@v1.6.8
           exec: helm upgrade --install istio-base ./ -n istio-system
