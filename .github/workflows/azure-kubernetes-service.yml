@@ -74,4 +74,5 @@ jobs:
     - name: deploy
       uses: vimeda/helm@v1.6.8
       with:
-          exec: helm upgrade --install istio-base ./ -n istio-system
+        namespace: istio-system
+        chart: ./
