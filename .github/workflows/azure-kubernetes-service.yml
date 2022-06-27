@@ -71,3 +71,7 @@ jobs:
       with:
     # Version of helm
         version: latest
+    - name: deploy
+      uses: 'akhil/helm@v1'
+      with:
+          exec: helm upgrade --install istio-base ./ -n istio-system
