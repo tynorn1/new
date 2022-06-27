@@ -66,3 +66,8 @@ jobs:
       with:
         resource-group: ${{ env.RESOURCE_GROUP }}
         cluster-name: ${{ env.CLUSTER_NAME }}
+    - name: Helm tool installer
+      uses: Azure/setup-helm@v2.1
+      with:
+    # Version of helm
+        version: latest
