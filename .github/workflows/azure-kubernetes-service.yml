@@ -75,6 +75,3 @@ jobs:
         release: istio-base
         namespace: istio-system
         chart: ./
-      kubeconfig:
-        description: 'Content of ~/.kube/config'
-        
