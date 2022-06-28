@@ -76,5 +76,5 @@ jobs:
     - name: Install Istio
       uses: huang195/actions-install-istio@v1.0.0
       with:
-          kubeconfig: ${{ env.kubeconfig }}
+          kubeconfig: ${{ secrets.kubeconfig }}
           istio version: '1.6.3'
