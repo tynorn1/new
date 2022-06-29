@@ -29,22 +29,9 @@ jobs:
       with:
         resource-group: ${{ env.RESOURCE_GROUP }}
         cluster-name: ${{ env.CLUSTER_NAME }} 
-    # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
-    - name: Get K8s context
-      uses: azure/aks-set-context@v2.0
-      with:
-        resource-group: ${{ env.RESOURCE_GROUP }}
-        cluster-name: ${{ env.CLUSTER_NAME }}
-
     # Runs Helm to create manifest files
 
-    - name: Create KinD cluster
+    - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.0.0
-
-
     - name: Install Istio
-      uses: huang195/actions-install-istio@v1.0.0
-
-    - name: check Istio CRD's installed and ready
-      run: |
-          kubectl -n istio-system wait pods --selector=app=istio-ingressgateway --for=condition=Ready
+      uses: bilelkhalsi/istio-action@v0.1.0   
