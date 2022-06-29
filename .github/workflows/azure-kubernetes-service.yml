@@ -34,13 +34,10 @@ on:
   workflow_dispatch:
 
 env:
-  #AZURE_CONTAINER_REGISTRY: "your-azure-container-registry"
-  #CONTAINER_NAME: "your-container-name"
   RESOURCE_GROUP: "azurehelm"
   CLUSTER_NAME: "kube1"
-  #IMAGE_PULL_SECRET_NAME: "your-image-pull-secret-name"
-  #DEPLOYMENT_MANIFEST_PATH: 'your-deployment-manifest-path'
-
+  CHART_PATH: "./"
+  CHART_OVERRIDE_PATH: "./"
 jobs:
   buildImage:
     permissions:
@@ -66,12 +63,17 @@ jobs:
           resource-group: ${{ env.RESOURCE_GROUP }}
           cluster-name: ${{ env.CLUSTER_NAME }}
       id: login
-    - name: Helm tool installer
-      uses: Azure/setup-helm@v2.1
-      with:
     
-    # Version of helm
-        version: latest
+    - name: Configure deployment
+      uses: azure/k8s-bake@773b6144a3732e3bf4c78b146a0bb9617b2e016b
+      with:
+        renderEngine: 'helm'
+        helmChart: ${{ env.CHART_PATH }}
+        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
+        overrides: |     
+          replicas:2
+        helm-version: 'latest' 
+      id: bake
     
     - name: Install Istio
       uses: huang195/actions-install-istio@v1.0.0
