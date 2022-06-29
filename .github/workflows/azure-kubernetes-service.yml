@@ -65,7 +65,7 @@ jobs:
       id: login
     
     - name: Configure deployment
-      uses: azure/k8s-bake@773b6144a3732e3bf4c78b146a0bb9617b2e016b
+    - uses: azure/k8s-bake@v2.2
       with:
         renderEngine: 'helm'
         helmChart: ${{ env.CHART_PATH }}
