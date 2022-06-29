@@ -37,11 +37,13 @@ jobs:
         cluster-name: ${{ env.CLUSTER_NAME }}
 
     # Runs Helm to create manifest files
+
     - name: Create KinD cluster
       uses: helm/kind-action@v1.0.0
 
+
     - name: Install Istio
-      uses: ./istio/manifests/charts/default/Chart.yaml
+      uses: ./istio/manifests/charts/default/
 
     - name: check Istio CRD's installed and ready
       run: |
