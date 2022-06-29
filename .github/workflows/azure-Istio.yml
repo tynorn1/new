@@ -3,7 +3,7 @@ name: Build and deploy an app to AKS with Helm
 on:
   push:
     branches:
-      - "main"
+      - "master"
   workflow_dispatch:
 
 env:
@@ -41,7 +41,7 @@ jobs:
       uses: helm/kind-action@v1.0.0
 
     - name: Install Istio
-      uses: ./istio/manifests/charts/default/
+      uses: ./istio/manifests/charts/default/Chart.yaml
 
     - name: check Istio CRD's installed and ready
       run: |
