@@ -43,7 +43,7 @@ jobs:
 
 
     - name: Install Istio
-      uses: ./istio/manifests/charts/default/
+      uses: huang195/actions-install-istio@v1.0.0
 
     - name: check Istio CRD's installed and ready
       run: |
