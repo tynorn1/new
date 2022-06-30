@@ -40,8 +40,8 @@ on:
 
 env:
   RESOURCE_GROUP: "azurehelm"
-  CHART_PATH: "./manifests/charts/base/"
-  CHART_OVERRIDE_PATH: "./manifests/charts/base/values.yaml"
+  CHART_PATH: "./manifests/charts/base/values.yaml"
+  CHART_OVERRIDE_PATH: "./manifests/charts/base/"
   CLUSTER_NAME: "kube1"
   NAMESPACE: "istio-system"
 
