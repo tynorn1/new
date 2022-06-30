@@ -40,8 +40,8 @@ on:
 
 env:
   RESOURCE_GROUP: "azurehelm"
-  CHART_PATH: "./manifests/charts/dafault/values.yaml"
-  CHART_OVERRIDE_PATH: "./manifests/charts/dafault/"
+  CHART_PATH: "./manifests/charts/base/values.yaml"
+  CHART_OVERRIDE_PATH: "./manifests/charts/base/"
   CLUSTER_NAME: "kube1"
   NAMESPACE: "istio-system"
 
@@ -76,5 +76,5 @@ jobs:
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: helm deploy
       run: |
-         helm upgrade  istiod ${{ env.CHART_OVERRIDE_PATH }} --install --wait  --namespace=istio-system
+         helm upgrade  istio-base ${{ env.CHART_OVERRIDE_PATH }} --install --wait  --namespace=istio-system
     
