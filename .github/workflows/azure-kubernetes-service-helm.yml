@@ -43,18 +43,9 @@ jobs:
     - run: |
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     # Runs Helm to create manifest files
-    - name: Bake deployment
-      uses: azure/k8s-bake@v2.1
+    - name: Helm Deploy
+      uses: vimeda/helm@v1.6.8
       with:
-        renderEngine: 'helm'
-        helmChart: ${{ env.CHART_PATH }}
-        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
-        overrides: |     
-          replicas:2
-        helm-version: 'latest' 
-      id: bake
-    - name: Azure deploy  
-      uses: Azure/k8s-deploy@v1
-      with:
-        namespace: ${{ env.NAMESPACE }}
-        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+          release: istiod 
+          namespace: ${{ env.NAMESPACE }}
+          chart: ${{ env.CHART_PATH }}   
