@@ -11,7 +11,7 @@ env:
   CHART_PATH: "./"
   CHART_OVERRIDE_PATH: "./manifests/charts/base/values.yaml"
   CLUSTER_NAME: "kube1"
-  NAMESPACE: "helowworld"
+  NAMESPACE: "istio-system"
 
 jobs:
   buildImage:
