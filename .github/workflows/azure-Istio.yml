@@ -8,8 +8,8 @@ on:
 
 env:
   RESOURCE_GROUP: "azurehelm"
-  CHART_PATH: "./istio/manifests/charts/default/"
-  CHART_OVERRIDE_PATH: "./istio/manifests/charts/default/values.yaml"
+  CHART_PATH: "./manifests/charts/base/"
+  CHART_OVERRIDE_PATH: "./manifests/charts/base/values.yaml"
   CLUSTER_NAME: "kube1"
 
 jobs:
@@ -30,8 +30,11 @@ jobs:
         resource-group: ${{ env.RESOURCE_GROUP }}
         cluster-name: ${{ env.CLUSTER_NAME }} 
     # Runs Helm to create manifest files
-
-    - name: Create k8s Kind Cluster
-      uses: helm/kind-action@v1.0.0
-    - name: Install Istio
-      uses: bilelkhalsi/istio-action@v0.1.0   
+    - name: Bake deployment
+      uses: azure/k8s-bake@v2.1
+      with:
+        renderEngine: 'helm'
+        helmChart: ${{ env.CHART_PATH }}
+        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
+        helm-version: 'latest' 
+      id: bake  
