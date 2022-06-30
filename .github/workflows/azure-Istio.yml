@@ -11,6 +11,7 @@ env:
   CHART_PATH: "./manifests/charts/base/"
   CHART_OVERRIDE_PATH: "./manifests/charts/base/values.yaml"
   CLUSTER_NAME: "kube1"
+  NAMESPACE: "istio-system"
 
 jobs:
   build:
@@ -37,4 +38,11 @@ jobs:
         helmChart: ${{ env.CHART_PATH }}
         overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
         helm-version: 'latest' 
-      id: bake  
+      id: bake
+    - run: |
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
+    - name: Azure deploy  
+      uses: Azure/k8s-deploy@v1
+      with:
+        namespace: ${{ env.NAMESPACE }}
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
