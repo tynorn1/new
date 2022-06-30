@@ -76,5 +76,5 @@ jobs:
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: helm deploy
       run: |
-         helm upgrade  istio-base ${{ env.CHART_OVERRIDE_PATH }} --install --wait  --namespace=istio-system
+         helm upgrade  istiod ${{ env.CHART_OVERRIDE_PATH }} --install --wait  --namespace=istio-system
     
