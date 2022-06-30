@@ -42,10 +42,7 @@ jobs:
         cluster-name: ${{ env.CLUSTER_NAME }}
     - run: |
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
-    # Runs Helm to create manifest files
-    - name: Helm Deploy
-      uses: vimeda/helm@v1.6.8
-      with:
-          release: istiod 
-          namespace: ${{ env.NAMESPACE }}
-          chart: ${{ env.CHART_PATH }}   
+    - name: helm deploy
+      run: |
+         helm3 upgrade istiod ${{ env.CHART_PATH }} --install --wait --namespace=istio-system --set=app.name=istiod --values=${{ env.CHART_OVERRIDE_PATH }} --atomic
+    
