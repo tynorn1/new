@@ -47,7 +47,7 @@ env:
   CLUSTER_NAME2: "kube2"
   RESOURCE_GROUP2: "kuber2"
 jobs:
-  buildImage:
+  deployKube1:
     permissions:
       contents: read
       id-token: write
@@ -71,19 +71,33 @@ jobs:
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: helm repo add
       run: |
-         helm repo add istiod https://istio-release.storage.googleapis.com/charts
+         helm repo add istio https://istio-release.storage.googleapis.com/charts
     - name: helm repo update
       run: |
          helm repo update  
     - name: helm install
       run: |
          helm upgrade --install istiod istio/istiod -n istio-system --wait           
-     # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
-    - name: Get K8s context from cluster ${{ env.CLUSTER_NAME2 }} 
+  deployKube2:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+    # Checks out the repository this file is in
+    - uses: actions/checkout@v3
+    
+    # Logs in with your Azure credentials
+    - name: Azure login
+      uses: azure/login@v1.4.3
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+    - name: Get K8s context from cluster ${{ env.CLUSTER_NAME }} 
       uses: azure/aks-set-context@v2.0
       with:
         resource-group: ${{ env.RESOURCE_GROUP2 }}
-        cluster-name: ${{ env.CLUSTER_NAME2 }}        
+        cluster-name: ${{ env.CLUSTER_NAME2 }} 
     - run: |
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: helm repo add
@@ -94,4 +108,4 @@ jobs:
          helm repo update  
     - name: helm install
       run: |
-         helm upgrade --install istiod istio/istiod -n istio-system --wait         
+         helm upgrade --install istiod istio/istiod -n istio-system --wait      
