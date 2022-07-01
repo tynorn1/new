@@ -44,7 +44,8 @@ env:
   CHART_OVERRIDE_PATH: "./manifests/charts/base/"
   CLUSTER_NAME: "kube1"
   NAMESPACE: "istio-system"
-
+  CLUSTER_NAME2: "kube2"
+  RESOURCE_GROUP2: "kuber2"
 jobs:
   buildImage:
     permissions:
@@ -61,17 +62,11 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
-    - name: Get K8s context
+    - name: Get K8s context from cluster ${{ env.CLUSTER_NAME }} 
       uses: azure/aks-set-context@v2.0
       with:
         resource-group: ${{ env.RESOURCE_GROUP }}
         cluster-name: ${{ env.CLUSTER_NAME }} 
-    # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
-    - name: Get K8s context
-      uses: azure/aks-set-context@v2.0
-      with:
-        resource-group: ${{ env.RESOURCE_GROUP }}
-        cluster-name: ${{ env.CLUSTER_NAME }}
     - run: |
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: helm repo add
@@ -83,5 +78,20 @@ jobs:
     - name: helm install
       run: |
          helm upgrade --install istiod istio/istiod -n istio-system --wait           
-         
-    
+     # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+    - name: Get K8s context from cluster ${{ env.CLUSTER_NAME2 }} 
+      uses: azure/aks-set-context@v2.0
+      with:
+        resource-group: ${{ env.RESOURCE_GROUP2 }}
+        cluster-name: ${{ env.CLUSTER_NAME2 }}        
+    - run: |
+         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
+    - name: helm repo add
+      run: |
+         helm repo add istio https://istio-release.storage.googleapis.com/charts
+    - name: helm repo update
+      run: |
+         helm repo update  
+    - name: helm install
+      run: |
+         helm upgrade --install istiod istio/istiod -n istio-system --wait         
