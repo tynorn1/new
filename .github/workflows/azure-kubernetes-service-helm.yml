@@ -82,6 +82,6 @@ jobs:
          helm repo update  
     - name: helm install
       run: |
-         helm install istiod istio/istiod -n istio-system --wait           
+         helm update -- install istiod istio/istiod -n istio-system --wait           
          
     
