@@ -100,9 +100,9 @@ jobs:
         cluster-name: ${{ env.CLUSTER_NAME2 }} 
     - run: |
          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f - 
-    - name: helm repo list
+    - name: helm repo update
       run: |
-         helm repo list      
+        helm repo update    
     - name: helm repo add
       run: |
          helm repo add istio https://istio-release.storage.googleapis.com/charts 
